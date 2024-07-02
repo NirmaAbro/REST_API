@@ -1,0 +1,63 @@
+how mongoose work ? 
+1)mongose ma firtly schema hota ha , , to define the structure , schema means structure jese , MOCK_DATA.json ma humny btaya ka name,email,id wages jo bhiuser ka hoga us tareky sa 
+
+2) then schema sa model bnaty hn 
+3) then model sa crud operations krty hnn 
+
+and gpt says in their words :
+Sure, here's a simple explanation of how Mongoose works:
+
+1. **Schema**: In Mongoose, the schema defines the structure of the data in your MongoDB collection. It's like a blueprint that outlines what fields (e.g., name, email, id) your documents will have and what type of data each field will contain. Think of it as a way to enforce the structure of the data you want to store.
+
+2. **Model**: Once you have a schema, you create a model from it. The model is a constructor function that allows you to interact with the specific collection defined by the schema. It's like creating a class in object-oriented programming that can be used to create instances (documents) in the database.
+
+3. **CRUD Operations**: With the model, you can then perform CRUD (Create, Read, Update, Delete) operations. These operations allow you to add new documents to the collection, retrieve existing documents, update documents, and delete documents. The model provides methods like `save()`, `find()`, `findByIdAndUpdate()`, and `deleteOne()` to handle these operations.
+
+Here's a quick example to illustrate:
+
+1. **Define Schema**:
+   ```javascript
+   const mongoose = require('mongoose');
+   const Schema = mongoose.Schema;
+
+   const userSchema = new Schema({
+     name: String,
+     email: String,
+     id: Number
+   });
+   ```
+
+2. **Create Model**:
+   ```javascript
+   const User = mongoose.model('User', userSchema);
+   ```
+
+3. **Perform CRUD Operations**:
+   ```javascript
+   // Create a new user
+   const newUser = new User({ name: 'John Doe', email: 'john@example.com', id: 1 });
+   newUser.save((err) => {
+     if (err) return console.error(err);
+     console.log('User saved successfully');
+   });
+
+   // Read users
+   User.find({}, (err, users) => {
+     if (err) return console.error(err);
+     console.log(users);
+   });
+
+   // Update a user
+   User.findByIdAndUpdate(userId, { email: 'newemail@example.com' }, (err) => {
+     if (err) return console.error(err);
+     console.log('User updated successfully');
+   });
+
+   // Delete a user
+   User.deleteOne({ id: 1 }, (err) => {
+     if (err) return console.error(err);
+     console.log('User deleted successfully');
+   });
+   ```
+
+This is a basic overview of how Mongoose works to define data structure, create models, and perform CRUD operations.
