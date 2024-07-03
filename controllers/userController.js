@@ -1,52 +1,7 @@
-const express = require("express");
-const mongoose = require("mongoose");
+const User = require("../models/user"); // Assuming you have a User model
 
-const app = express();
-const PORT = 3000;
-
-// MongoDB connection string
-mongoose
-  .connect("mongodb://127.0.0.1:27017/crudYoutube", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("MongoDB connected");
-  })
-  .catch((err) => {
-    console.error("Mongoose error:", err);
-  });
-
-// Middleware for parsing URL-encoded data and JSON
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-// Define Mongoose schema
-const userSchema = new mongoose.Schema({
-  firstname: {
-    type: String,
-    required: true,
-  },
-  lastname: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  gender: {
-    type: String,
-    required: true,
-  },
-});
-
-// Create Mongoose model
-const User = mongoose.model("User", userSchema);
-
-// Route to get all users
-app.get("/api/users", async (req, res) => {
+// Controller function to get all users
+const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -54,10 +9,10 @@ app.get("/api/users", async (req, res) => {
     console.error("Error fetching users:", error);
     res.status(500).json({ msg: "Error fetching users", error });
   }
-});
+};
 
-// Route to get a user by ID
-app.get("/api/users/:id", async (req, res) => {
+// Controller function to get a user by ID
+const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
@@ -69,10 +24,10 @@ app.get("/api/users/:id", async (req, res) => {
     console.error("Error fetching user:", error);
     res.status(500).json({ msg: "Error fetching user", error });
   }
-});
+};
 
-// Route to create a new user
-app.post("/api/users", async (req, res) => {
+// Controller function to create a new user
+const createUser = async (req, res) => {
   try {
     const { firstname, lastname, email, gender } = req.body;
 
@@ -99,10 +54,10 @@ app.post("/api/users", async (req, res) => {
     console.error("Error creating user:", error);
     return res.status(500).json({ msg: "Error creating user", error });
   }
-});
+};
 
-// Route to update a user by ID
-app.patch("/api/users/:id", async (req, res) => {
+// Controller function to update a user by ID
+const updateUser = async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
@@ -129,10 +84,10 @@ app.patch("/api/users/:id", async (req, res) => {
     console.error("Error updating user:", error);
     return res.status(500).json({ msg: "Error updating user", error });
   }
-});
+};
 
-// Route to delete a user by ID
-app.delete("/api/users/:id", async (req, res) => {
+// Controller function to delete a user by ID
+const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -148,9 +103,12 @@ app.delete("/api/users/:id", async (req, res) => {
     console.error("Error deleting user:", error);
     return res.status(500).json({ msg: "Error deleting user", error });
   }
-});
+};
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`App is running on port ${PORT}`);
-});
+module.exports = {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+};

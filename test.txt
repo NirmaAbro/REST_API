@@ -61,3 +61,8 @@ Here's a quick example to illustrate:
    ```
 
 This is a basic overview of how Mongoose works to define data structure, create models, and perform CRUD operations.
+
+MVC pattern :
+MODEL ya view ko update krta ha  
+VIEW
+CONTROLLER  model ko manipulate krta ha means controll usk pas hota ha .
